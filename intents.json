@@ -1,0 +1,76 @@
+{
+  "intents": [
+    {
+    "tag":"greeting",
+    "patterns":[
+      "Hi",
+      "Hey",
+      "How are you",
+      "Is anyone there?",
+      "Is anybody there?",
+      "Hello",
+      "Good day"
+
+
+    ],
+    "responses":[
+      "Hey :-)",
+      "Hello, thanks for visiting",
+      "Hi there, what can I do for you?",
+      "Hi there, how can I help?"
+    ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["Bye","See you later","Goodbye"],
+      "responses": [
+        "See you later, thanks for visiting",
+        "Have a nice day",
+        "BYe! Come back again soon."
+      ]
+    },
+    {
+      "tag": "thanks",
+      "patterns": ["Thanks","Thank you","That's helpful","Thanks a lot"],
+      "responses": ["Happy to help!","Any time!","My pleasure"]
+
+    },
+    {
+      "tag": "items",
+      "patterns": [
+        "What items do you have",
+        "What kinds of items are there",
+        "What do you sell"
+      ],
+      "responses":[
+        "We sell vicky",
+        "We have vicky"
+      ]
+    },
+    {
+      "tag": "payments",
+      "patterns": [
+        "Do you accept cash?",
+        "What are the payment options?",
+        "What modes of payment do you accept?",
+        "Do you accept card?"
+         ],
+      "responses":
+      [
+        "We accept Card , Cryptocurrency and other modes of online payment"
+      ]
+    },
+    {
+      "tag": "delivery",
+      "patterns": [
+        "How much time does delivery take?",
+        "How many days does it take for delivery?",
+        "When can I expect the things?",
+        "When will the items arrive?"
+      ],
+      "responses": ["Delivery takes between 2-4 days","The product will arrive at your destination in 2-4 business days"]
+    }
+
+  ]
+
+}
