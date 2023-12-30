@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        #chat-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        #chat p {
+            margin: 5px 0;
+        }
+
+        #user-input {
+            margin-top: 10px;
+        }
+    </style>
+    <title>Chatbot UI</title>
+
+</head>
+<body>
+    <h1>Chatbot</h1>
+
+    <div id="chat-container">
+        <div id="chat"></div>
+        <input type="text" id="user-input" placeholder="Type your message and press Enter">
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+    <script>
+    const chatContainer = document.getElementById('chat-container');
+    const chat = document.getElementById('chat');
+    const userInput = document.getElementById('user-input');
+
+    function handleUserInput() {
+        const userMessage = userInput.value;
+
+        // Display user message
+        chat.innerHTML += `<p><strong>User:</strong> ${userMessage}</p>`;
+
+        if (userMessage.toLowerCase() === 'quit') {
+            // End the conversation
+
+            /*chat.innerHTML += `<p><strong>Bot:</strong> Conversation ended. Type 'quit' to restart.</p>`*/
+        } else {
+            // Continue the conversation
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userMessage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const botResponse = data.response;
+
+                // Display bot response
+                chat.innerHTML += `<p><strong>Bot:</strong> ${botResponse}</p>`;
+
+                // Clear user input
+                userInput.value = '';
+
+                // Scroll to the bottom of the chat
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                // If the conversation is not ended, continue listening for user input
+                if (userMessage.toLowerCase() !== 'quit') {
+                    userInput.focus();
+                }
+            });
+        }
+    }
+
+    userInput.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            handleUserInput();
+        }
+    });
+</script>
+
+</body>
+</html>
