@@ -3,10 +3,17 @@ import json
 import torch
 from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
+from pymongo import MongoClient
+
+uri = "mongodb+srv://jr10:d%27-9%40d%2A8%5DDw~kT%3F@cluster0.5gzes4t.mongodb.net/?retryWrites=true&w=majority"
+client = MongoClient(uri)
+
+cb = client.Chatbot
+intents = cb.Intent.find_one()
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-with open('intents.json', 'r') as f:
-    intents = json.load(f)
+"""with open('intents.json', 'r') as f:
+    intents = json.load(f)"""
 
 FILE = "data.pth"
 data = torch.load(FILE)
@@ -43,11 +50,11 @@ def get_response(sentence):
     if prob.item() > 0.75:
         for intent in intents["intents"]:
             if tag == intent["tag"]:
-                return (f'{random.choice(intent["responses"])}')
+                return f'{random.choice(intent["responses"])}'
     else:
-        return ("Sorry, I don't understand")
-        with open("Unrecognized.txt", 'a') as f:
-            f.write(a1)
+        unr = cb.Unrecognized
+        unr.insert_one({"Text": a1})
+        return "Sorry, I don't understand"
 
 
 """while True:

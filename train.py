@@ -1,6 +1,8 @@
 import numpy as np
 import random
 import json
+import pickle
+from pymongo import MongoClient
 
 import torch
 import torch.nn as nn
@@ -9,8 +11,14 @@ from torch.utils.data import Dataset, DataLoader
 from nltk_utils import bag_of_words, tokenize, stem
 from model import NeuralNet
 
-with open('intents.json', 'r') as f:
-    intents = json.load(f)
+uri = "mongodb+srv://jr10:d%27-9%40d%2A8%5DDw~kT%3F@cluster0.5gzes4t.mongodb.net/?retryWrites=true&w=majority"
+client = MongoClient(uri)
+
+db = client.Chatbot
+intents = db.Intent.find_one()
+
+"""with open('intents.json', 'r') as f:
+    intents = json.load(f)"""
 
 all_words = []
 tags = []
@@ -129,15 +137,10 @@ torch.save(data, FILE)
 
 print(f'training complete. file saved to {FILE}')
 
-data={
-    "model_state":model.state_dict(),
-    "input_size":input_size,
-    "output_size":output_size,
-    "hidden_size":hidden_size,
-    "all_words":all_words,
-    "tags":tags
-    }
-FILE="data.pth"
-torch.save(data, FILE)
-
-print(f'training complete, file saved to {FILE}')
+data_2 = {
+    "all_words" : all_words,
+    "tags": tags
+}
+with open("dat.pickle","wb") as f:
+    pickle.dump(data_2,f)
+    print("Successfully saved")
